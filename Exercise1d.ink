@@ -13,7 +13,7 @@ This exercise will demonstrate the following in the example video:
 */
 
 
-VAR time = 0 //  0 Morning, 1 Noon, 2 Night
+VAR time = -1 //  0 Morning, 1 Noon, 2 Night
 
 
 
@@ -21,19 +21,43 @@ VAR time = 0 //  0 Morning, 1 Noon, 2 Night
 -> seashore
 
 == seashore ==
-You are sitting on the beach. 
+{night_surf: You made it back safely.} You are sitting on the beach. It is { advance_time() }
 
-+ [Wait] -> seashore
++ [Stroll down the beach.] -> beach
++ { time == 0} [Go surfing.] -> surf
++ { time == 1} [Go surfing.] -> surf
+* { time == 2} [Go surfing.] -> night_surf
 -> DONE
 
-== beach2 ==
+== surf ==
+Those waves were gnarllly. It is { advance_time() }
+
++ [Go back to the beach] -> seashore
+* { time == 2 } [Catch the next wave] -> night_surf
++ { time == 1 } [Catch the next wave] -> surf
++ { time == 0 } [Catch the next wave] -> surf
+
+== night_surf ==
+You lost the beach in the darkness and are hopelessly lost. In the distance though there seems to be humming.
+
++ [Swim towards the sound] -> siren_ending
++ [Swim away from the sound] -> seashore
+
+== siren_ending ==
+As you draw closer to the sound the song becomes sickenly sweet and draws you in even more. On a rock sits the most beautiful woman you've ever seen. As you approach her you feel comfort like you've never felt before. You feel love in her embrace, and die happily in her arms as she feasts upon you.
+-> END
+
+== beach ==
 This is further down the beach.
 
-+ [Move back up the beach] -> seashore
+It is { advance_time() }
+* { time == 1 } [Pick up some seashells] -> shells
+
++ [Stroll back up the beach] -> seashore
 
 == shells ==
 You pick up the shells
--> beach2
+-> beach
 
 == function advance_time ==
 
@@ -43,7 +67,6 @@ You pick up the shells
         - time > 2:
             ~ time = 0
     }    
-    /*
     {    
         - time == 0:
             ~ return "Morning"
@@ -55,7 +78,6 @@ You pick up the shells
             ~ return "Night"
     
     }
-    */
     
         
     ~ return time
